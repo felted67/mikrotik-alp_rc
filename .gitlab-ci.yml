@@ -9,8 +9,6 @@ docker-mikrotik-build:
   variables:    
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
-  stages:
-    - Build
   stage: Build
   before_script:
     - docker context create builder 
