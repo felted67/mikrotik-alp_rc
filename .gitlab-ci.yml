@@ -5,7 +5,7 @@ docker-build:
   tags:
     - rhel8,docker,homenet,lesnet
   services:
-    - docker:dind
+    - maniator/dind-buildx
   variables:
     DOCKER_HOST: tcp://gitlab-runner10.lesnet:2376
     DOCKER_DRIVER: overlay2    
