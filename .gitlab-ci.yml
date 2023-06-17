@@ -1,11 +1,11 @@
 docker-build:
   # Official docker image.
-  image: maniator/dind-buildx
+  image: docker/dind:latest  
   stage: build
   tags:
     - rhel8,docker,homenet,lesnet
   services:
-    - maniator/dind-buildx
+    - docker/dind:latest
   variables:
     DOCKER_HOST: tcp://gitlab-runner10.lesnet:2376
     DOCKER_DRIVER: overlay2    
