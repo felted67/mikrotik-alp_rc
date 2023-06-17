@@ -6,12 +6,12 @@ docker-build:
   services:
     - docker:20.10.16-dind
   variables:
-    DOCKER_HOST: unix:///var/run/docker.sock
+    DOCKER_HOST: https://127.0.0.1:2375
     DOCKER_DRIVER: overlay2 
     DOCKER_TLS_CERTDIR: "/certs"
   stage: build
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker buildx create --name multiarch-builder --driver docker-container --use unix:///var/run/docker.sock
+    - docker buildx create --name multiarch-builder --driver docker-container --use $DOCKER_HOST
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
