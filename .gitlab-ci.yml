@@ -1,5 +1,5 @@
 docker-build:
-  # Official docker image.
+  stage: build
   image: docker:20.10.16-dind   
   tags:
     - rhel8,docker,homenet,lesnet
@@ -7,11 +7,8 @@ docker-build:
     - name: docker:20.10.16-dind
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
-  variables:
-    DOCKER_HOST: gitlab-runner10.lesnet
-    DOCKER_DRIVER: docker-container 
-    DOCKER_TLS_CERTDIR: "/certs"
-  stage: build
+  variables:    
+    DOCKER_TLS_CERTDIR: "/certs"  
   before_script:
     - docker buildx create --name multiarch-builder --driver docker-container --use 
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
