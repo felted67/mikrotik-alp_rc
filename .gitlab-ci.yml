@@ -10,8 +10,8 @@ docker-build:
   variables:    
     DOCKER_TLS_CERTDIR: "/certs"  
   before_script:
-    - docker context create --name multiarch-builder
-    - docker buildx create --name multiarch-builder --driver docker-container --use 
+    - docker context create multiarch-builder
+    - docker buildx create --name multiarch-builder --driver docker-container --use multiarch-builder 
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:    
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
