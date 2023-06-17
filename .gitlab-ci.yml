@@ -1,15 +1,14 @@
 docker-build:
   # Official docker image.
-  image: docker:latest
+  image: docker:stable
   stage: build
   tags:
     - rhel8,docker,homenet,lesnet
   services:
     - docker:dind
   variables:
-    DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_DRIVER: overlay2
-
+    DOCKER_HOST: tcp://gitlab-runner10.lesnet:2376
+    DOCKER_DRIVER: overlay2    
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
