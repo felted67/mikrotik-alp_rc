@@ -1,7 +1,4 @@
-docker-mikrotik-build:
-  stages:
-    - Build
-  stage: Build
+docker-mikrotik-build:  
   image: docker:20.10.16-dind   
   tags:
     - rhel8,docker,homenet,lesnet
@@ -12,6 +9,9 @@ docker-mikrotik-build:
   variables:    
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
+  stages:
+    - Build
+  stage: Build
   before_script:
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
