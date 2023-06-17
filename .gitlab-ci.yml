@@ -17,7 +17,7 @@ docker-mikrotik-build:
     - docker info
   script:    
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
-    - docker save $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG | gzip > $CI_REGISTRY_IMAGE_$CI_COMMIT_REF_SLUG.tar.gz
+    - docker save $CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG | gzip > $CI_REGISTRY_IMAGE_$CI_COMMIT_REF_SLUG.tar.gz
     - docker image ls
   artifacts:
     paths:
