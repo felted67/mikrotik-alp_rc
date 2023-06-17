@@ -3,7 +3,7 @@ docker-build-master:
   image: docker:latest
   stage: build
   tags:
-    - rhel8,docker,homenet
+    - rhel8,docker,homenet,lesnet
   services:
     - docker:dind
   before_script:
