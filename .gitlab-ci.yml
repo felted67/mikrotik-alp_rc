@@ -6,8 +6,8 @@ docker-build:
   services:
     - docker:20.10.16-dind
   variables:
-    DOCKER_HOST: localhost
-    DOCKER_DRIVER: overlay2 
+    DOCKER_HOST: gitlab-runner10.lesnet
+    DOCKER_DRIVER: docker-container 
     DOCKER_TLS_CERTDIR: "/certs"
   stage: build
   before_script:
