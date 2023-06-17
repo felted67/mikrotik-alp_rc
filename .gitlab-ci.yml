@@ -2,6 +2,8 @@ docker-build-master:
   # Official docker image.
   image: docker:latest
   stage: build
+  tags:
+    - rhel8,docker,homenet
   services:
     - docker:dind
   before_script:
@@ -16,6 +18,8 @@ docker-build:
   # Official docker image.
   image: docker:latest
   stage: build
+  tags:
+    - rhel8,docker,homenet
   services:
     - docker:dind
   before_script:
