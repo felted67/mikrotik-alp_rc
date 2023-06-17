@@ -1,11 +1,11 @@
 docker-build:
   # Official docker image.
-  image: docker/dind:latest  
+  image: docker:dind 
   stage: build
   tags:
     - rhel8,docker,homenet,lesnet
   services:
-    - docker/dind:latest
+    - docker:dind
   variables:
     DOCKER_HOST: tcp://gitlab-runner10.lesnet:2376
     DOCKER_DRIVER: overlay2    
