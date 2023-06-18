@@ -1,4 +1,10 @@
-docker-mikrotik-build:  
+stages:
+  - docker-local-build
+  - docker-multiarch-build
+  #- docker-tagging
+
+docker-local-mikrotik-build:
+  stage: docker-local-build
   image: docker:24.0.2-dind   
   tags:
     - rhel8,docker,homenet,lesnet
@@ -9,14 +15,11 @@ docker-mikrotik-build:
   variables:    
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
-  stage: build
   before_script:
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
-    - docker login -u "$CI_REGISTRY_USER" -p "$DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker info
-  script:    
-    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .    
+  script:
     - docker buildx build --no-cache --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_REF_SLUG .
     - docker buildx build --no-cache --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_REF_SLUG .
     - docker buildx build --no-cache --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_REF_SLUG .
@@ -29,5 +32,45 @@ docker-mikrotik-build:
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_REF_SLUG-amd64.tar.gz
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_REF_SLUG-arm64.tar.gz
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_REF_SLUG-arm.tar.gz
+
+docker-multiarch-mikrotik-push-build:  
+  stage: docker-multiarch-build
+  needs: [docker-local-mikrotik-build]
+  image: docker:24.0.2-dind   
+  tags:
+    - rhel8,docker,homenet,lesnet
+  services:
+    - name: docker:24.0.2-dind
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+      alias: 'docker' 
+  variables:    
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  before_script:
+    - docker context create builder 
+    - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - docker login -u "$CI_REGISTRY_USER" -p "$DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
+    - docker info
+  script:    
+    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .    
+    
+docker-dockerhub-tagging:
+  stage: docker-tagging
+  needs: [docker-multiarch-mikrotik-push-build]
+  image: docker:24.0.2-dind
+  tags:
+    - rhel8,docker,homenet,lesnet
+  services:
+    - name: docker:24.0.2-dind
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+      alias: 'docker' 
+  variables:    
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  before_script:
+    - docker info
+  script:
+    
+
             
     
