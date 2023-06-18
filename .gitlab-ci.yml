@@ -63,7 +63,7 @@ docker-multiarch-mikrotik-build-devel:
 
 docker-multiarch-mikrotik-build-version:
   stage: docker-multiarch-build-version
-  needs: [ocker-multiarch-mikrotik-build-devel]
+  needs: [docker-multiarch-mikrotik-build-devel]
   image: docker:24.0.2-dind
   tags:
     - rhel8,docker,homenet,lesnet
