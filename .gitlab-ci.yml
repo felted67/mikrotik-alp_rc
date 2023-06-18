@@ -58,7 +58,7 @@ docker-multiarch-mikrotik-build-devel:
   script:    
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
   rules:
-    - if: '$CI_PRODUCTION_DEVEL_SWITCH' == 'TRUE'                
+    - if: $CI_PRODUCTION_DEVEL_SWITCH == 'TRUE'                
       when: always
 
 docker-multiarch-mikrotik-build-version:
@@ -80,7 +80,7 @@ docker-multiarch-mikrotik-build-version:
   script:
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
   rules:
-    - if: '$CI_PRODUCTION_VERSION_SWITCH' == "true"      
+    - if: $CI_PRODUCTION_VERSION_SWITCH == "true"      
       when: always
 
 docker-multiarch-mikrotik-build-latest:
@@ -102,5 +102,5 @@ docker-multiarch-mikrotik-build-latest:
   script:
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" .    
   rules:
-    - if: '$CI_PRODUCTION_LATEST_SWITCH' == "true"      
+    - if: $CI_PRODUCTION_LATEST_SWITCH == "true"      
       when: always
