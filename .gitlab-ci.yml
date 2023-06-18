@@ -14,7 +14,7 @@ docker-local-mikrotik-build:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: docker-container
+    DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -46,7 +46,7 @@ docker-multiarch-mikrotik-build-devel:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: docker-container
+    DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -69,7 +69,7 @@ docker-multiarch-mikrotik-build-version:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: docker-container
+    DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -95,7 +95,7 @@ docker-multiarch-mikrotik-build-latest:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: docker-container
+    DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
