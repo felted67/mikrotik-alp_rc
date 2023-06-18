@@ -4,11 +4,14 @@ stages:
   - docker-multiarch-build-version
   - docker-multiarch-build-latest
 
+variables:
+  RUNNER_TAGS: 'rhel8,docker,homenet,lesnet'
+
 docker-local-mikrotik-build:
   stage: docker-local-build
   image: docker:24.0.2-dind   
   tags:
-    - rhel8,docker,homenet,lesnet
+    - $RUNNER_TAGS
   services:
     - name: docker:24.0.2-dind
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
@@ -40,7 +43,7 @@ docker-multiarch-mikrotik-build-devel:
   needs: [docker-local-mikrotik-build]
   image: docker:24.0.2-dind   
   tags:
-    - rhel8,docker,homenet,lesnet
+    - $RUNNER_TAGS
   services:
     - name: docker:24.0.2-dind
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
@@ -63,7 +66,7 @@ docker-multiarch-mikrotik-build-version:
   needs: [docker-multiarch-mikrotik-build-devel]
   image: docker:24.0.2-dind
   tags:
-    - rhel8,docker,homenet,lesnet
+    - $RUNNER_TAGS
   services:
     - name: docker:24.0.2-dind
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
@@ -89,7 +92,7 @@ docker-multiarch-mikrotik-build-latest:
   needs: [docker-multiarch-mikrotik-build-devel]
   image: docker:24.0.2-dind
   tags:
-    - rhel8,docker,homenet,lesnet
+    - $RUNNER_TAGS
   services:
     - name: docker:24.0.2-dind
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
