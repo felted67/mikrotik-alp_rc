@@ -14,7 +14,7 @@ docker-local-mikrotik-build:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: overlay2
+    DOCKER_DRIVER: docker-container
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -46,7 +46,7 @@ docker-multiarch-mikrotik-build-devel:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: overlay2
+    DOCKER_DRIVER: docker-container
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -69,7 +69,7 @@ docker-multiarch-mikrotik-build-version:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: overlay2
+    DOCKER_DRIVER: docker-container
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -82,7 +82,7 @@ docker-multiarch-mikrotik-build-version:
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
   rules:
     - if: $CI_PRODUCTION_VERSION_SWITCH == "true"      
-      when: always
+      when: manual
 
 docker-multiarch-mikrotik-build-latest:
   stage: docker-multiarch-build-latest
@@ -95,7 +95,7 @@ docker-multiarch-mikrotik-build-latest:
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
-    DOCKER_DRIVER: overlay2
+    DOCKER_DRIVER: docker-container
     DOCKER_TLS_CERTDIR: ""  
   before_script:
     - docker context create builder 
@@ -108,4 +108,4 @@ docker-multiarch-mikrotik-build-latest:
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" .    
   rules:
     - if: $CI_PRODUCTION_LATEST_SWITCH == "true"      
-      when: always
+      when: manual
