@@ -1,9 +1,9 @@
 docker-mikrotik-build:  
-  image: docker:20.10.16-dind   
+  image: docker:latest-dind   
   tags:
     - rhel8,docker,homenet,lesnet
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:latest-dind
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
