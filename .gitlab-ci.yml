@@ -22,18 +22,19 @@ docker-local-mikrotik-build:
     - apk update
     - apk add git
     - docker info
+    - export CI_JOB_TIMESTAMP=$(date --utc -Iseconds)
   script:
     - docker buildx build --no-cache --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_JOB_TIMESTAMP-amd64.tar.gz
     - docker buildx build --no-cache --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_JOB_TIMESTAMP-arm64.tar.gz
     - docker buildx build --no-cache --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_JOB_TIMESTAMP-arm.tar.gz
   artifacts:
     paths:
-            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
-            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
-            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_JOB_TIMESTAMP-amd64.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_JOB_TIMESTAMP-arm64.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_JOB_TIMESTAMP-arm.tar.gz
 
 docker-multiarch-mikrotik-build-devel:  
   stage: docker-multiarch-build-devel
