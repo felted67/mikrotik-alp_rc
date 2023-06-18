@@ -1,7 +1,7 @@
 stages:
   - docker-local-build
   - docker-multiarch-build
-  #- docker-tagging
+  - docker-tagging
 
 docker-local-mikrotik-build:
   stage: docker-local-build
