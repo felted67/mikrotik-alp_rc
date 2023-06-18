@@ -18,6 +18,8 @@ docker-local-mikrotik-build:
   before_script:
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - apk update
+    - apk add git
     - docker info
   script:
     - docker buildx build --no-cache --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_REF_SLUG .
@@ -49,6 +51,8 @@ docker-multiarch-mikrotik-push-build:
   before_script:
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - apk update
+    - apk add git
     - docker login -u "$CI_REGISTRY_USER" -p "$DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker info
   script:    
