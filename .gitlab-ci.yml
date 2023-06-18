@@ -70,7 +70,7 @@ docker-dockerhub-tagging:
   before_script:
     - docker info
   script:
-    
+    - docker image ls
 
             
     
