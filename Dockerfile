@@ -1,14 +1,14 @@
 #
-# Dockerfile for alpine-linux-rc-apache2-php81 mikrotik-docker-image
+# Dockerfile for alpine-linux-rc mikrotik-docker-image
 # (C) 2023 DL7DET
 #
 
-FROM --platform=$TARGETPLATFORM alpine:3.18.0 AS base
+FROM --platform=$TARGETPLATFORM  alpine:3.18.0 AS base
 
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.18/main/' >> /etc/apk/repositories \
     && echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.18/community' >> /etc/apk/repositories \
     && apk add --no-cache --update --upgrade su-exec ca-certificates
-
+    
 FROM base AS openrc
 
 RUN apk add --no-cache openrc \
@@ -39,28 +39,8 @@ RUN apk add --no-cache openrc \
 RUN apk update && \
     apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
 
-RUN apk update && \
-    apk add --no-cache bash build-base gcc wget git autoconf libmcrypt-dev libzip-dev zip \
-    g++ make openssl-dev \
-    php81 php81-fpm php81-common \
-    php81-openssl \
-    php81-pdo_mysql \
-    php81-mbstring
-    
-RUN apk update && \
-    apk --no-cache add apache2 apache2-proxy apache-mod-fcgid tzdata
-
 COPY ./config_files/first_start.sh /sbin/
-COPY ./config_files/php_configure.sh /sbin/
-COPY ./config_files/httpd.new.conf /etc/apache2/
-COPY ./config_files/php-fpm.new.conf /etc/php81/
-COPY ./config_files/www.new.conf /etc/php81/php-fpm.d/
-COPY ./config_files/php-fpm81.sh /etc/profile.d/
-COPY ./config_files/index.html /root/
-COPY ./config_files/index.php /root/
-COPY ./config_files/phpinfo.php /root/
 
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
-RUN chown root:root /sbin/php_configure.sh && chmod 0700 /sbin/php_configure.sh
 
 CMD ["/sbin/init"]
