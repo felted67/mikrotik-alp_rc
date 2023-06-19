@@ -1,8 +1,10 @@
 stages:
   - docker-local-build
   - docker-multiarch-build-devel
-  - docker-multiarch-build-version
-  - docker-multiarch-build-latest
+  - docker-multiarch-build-devel-version
+  - docker-multiarch-build-devel-version-latest
+
+include:  /.gitlab-ci-vars.yml  
 
 variables:
   RUNNER_TAGS: 'rhel8,docker,homenet,lesnet'
@@ -27,16 +29,18 @@ docker-local-mikrotik-build:
     - docker info   
   script:
     - docker buildx build --no-cache --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_PIPELINE_CREATED_AT-amd64.tar.gz
     - docker buildx build --no-cache --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_PIPELINE_CREATED_AT-arm64.tar.gz
     - docker buildx build --no-cache --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_PIPELINE_CREATED_AT-arm.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+  parallel: 3
   artifacts:
+    expire_in: 30 days
     paths:
-            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_PIPELINE_CREATED_AT-amd64.tar.gz
-            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_PIPELINE_CREATED_AT-arm64.tar.gz
-            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-$CI_PIPELINE_CREATED_AT-arm.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
 
 docker-multiarch-mikrotik-build-devel:  
   stage: docker-multiarch-build-devel
@@ -60,10 +64,13 @@ docker-multiarch-mikrotik-build-devel:
     - docker info
   script:    
     - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
-
-docker-multiarch-mikrotik-build-version:
-  stage: docker-multiarch-build-version
-  needs: [docker-multiarch-mikrotik-build-devel]
+  rules:
+    - if: ($CI_PRODUCTION_VERSION_SWITCH != "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")
+  when: always
+  
+docker-multiarch-mikrotik-build-devel-version:
+  stage: docker-multiarch-build-devel-version
+  needs: [docker-local-mikrotik-build]
   image: docker:24.0.2-dind
   tags:
     - $RUNNER_TAGS
@@ -82,14 +89,14 @@ docker-multiarch-mikrotik-build-version:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker info
   script:
-    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
+    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
   rules:
-    - if: $CI_PRODUCTION_VERSION_SWITCH == "true"      
-      when: manual
+    - if: ($CI_PRODUCTION_VERSION_SWITCH == "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")      
+      when: always
 
-docker-multiarch-mikrotik-build-latest:
-  stage: docker-multiarch-build-latest
-  needs: [docker-multiarch-mikrotik-build-devel]
+docker-multiarch-mikrotik-build-devel-version-latest:
+  stage: docker-multiarch-build-devel-version-latest
+  needs: [docker-local-mikrotik-build]
   image: docker:24.0.2-dind
   tags:
     - $RUNNER_TAGS
@@ -108,7 +115,7 @@ docker-multiarch-mikrotik-build-latest:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker info
   script:
-    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" .    
+    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" .    
   rules:
-    - if: $CI_PRODUCTION_LATEST_SWITCH == "true"      
-      when: manual
+    - if: ($CI_PRODUCTION_LATEST_SWITCH == "true" &&  $CI_PRODUCTION_VERSION_SWITCH == "true")   
+      when: always 
