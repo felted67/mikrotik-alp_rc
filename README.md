@@ -1,6 +1,6 @@
 # **Information & Theory**
 
-## mikrotik-alp_rc  - Docker-image for Mikrotik®-devices
+## mikrotik-alp_rc_haproxy  - Docker-image for Mikrotik®-devices
 
 This docker-image for Mikrotik®-devices is intended to install inside a container-enabled device.</br>
 If your Mikrotik®-device is able to run docker-images mainly depends on the device and the used RouterOS (ROS®).</br>
@@ -20,15 +20,15 @@ on the shares. Also you could use a external-disk (SSD/USB-Stick) as a storage-d
 </br>
 This image is build using Docker-in-Docker-techniques on a CI/CD-system. The images are tested on several CHR-</br> 
 (CloudHostedRouter)-systems on  AMD64(x86_64)-hosts (virtual/non-virtual) and also on different</br> ARM/ARM64-devices (hAP ax2, hAP ax3, RB3011 and others).</br>
-</br>
+
 ### Theory of the image   
-</br>
+
 Mainly a docker-image consists of one process, which is running alone in the container on the host-system. This means when this</br> 
 process has ended, the whole container ends. At this point this image is different. Because of using a very small Linux (Alpine Linux),</br>
 it is possible to run the openrc-init-system in the container as the main process. This openrc-process breaks the historical way a</br> 
 container is meant to run, but gives also to control running tasks inside the container.</br> 
 So mainly the openrc-(init) -process is running all the time, giving the chance to add several more tasks to the container. </br>
-Also it is possible to restart the processes beside openrc running inside the container without killing the complete container itself</br>.
+Also it is possible to restart the processes beside openrc running inside the container without killing the complete container itself.</br>
 This is the main theory of this image - no magic for far...</br>
 
 ### Installation of docker-image
@@ -46,21 +46,28 @@ In the previous opened shell of the container in terminal of WinBox® do:</br>
 2.) Run <code>/sbin/first_start.sh</code> to complete configuration of the image.</br>
 3.) Assign under IP/Firewall/NAT a DST-NAT-rule to ip of docker-container (defined under /interfaces/veth) and needed port of service in container. </br>
 
-### Remarks: 
+### Remarks
 
-Version of image reflects the used LinuxAlpine-version.</br>
-Tag -latest is the actual stable running version.</br>
+The tag beside -devel and -latest displays the version of the image, devided in two parts with a "-" between them.</br> 
+Left part of image-tag reflects the used AlpineLinux-version (v3.18.2-..).The right part is the version of the image itself (..-0.0.1).</br>
+Tag -latest is the actual and latest (highest tag) stable running version.</br>
+Tag -devel is the current development version, not advised for production. Also the -devel-tag may not run, as development in going on.</br>
+***Please be advised again NOT to use the -devel-version in a production-environment.***</br> 
+Because of development is made with Gitlab and therefore with CI/CD-techniques, these version are created automatically without further notice</br> 
+and will not be revised or tested permanently. A tagged version with version-number or the -latest-tagged-images are tested on the target-system </br>
+before getting tagged !</br> 
+</p>
 It is useful at the beginning to assign the container a root-directory (Root-Dir) to get a "stable" filesystem for the container.</br>
 Using rose-storage-package for filesystem of container may not work if nfs-shares are used.
-Depending on the service and/or first_run.sh-script</br> a chown or chmod in the script may not work on nfs-shares.</br>
+Depending on the service and/or first_start.sh-script</br> a chown or chmod in the script may not work on nfs-shares.</br>
 
-### Disclaimer:
+### Disclaimer
 
-Mikrotik®, WInBox®, RouterOS, ROS®, hap x2, hapx3,, RB3011 and others are trademarks or registered names of SIA Mikrotīkls</br>
-This project is not affliated with SIA Mikrotīkls and SIA Mikrotīkls is not responsible for this project  Link: https://mikrotik.com/aboutus</br>
+Mikrotik®, WInBox®, RouterOS, ROS®, hap x2, hap x3, RB3011 and others are or maybe trademarks or registered names of SIA Mikrotīkls.</br>
+This project is not affliated with SIA Mikrotīkls and SIA Mikrotīkls is not responsible for this project. Link: https://mikrotik.com/aboutus</br>
 All names, trademarks or other techniques are only used to illustrate ths project.</br>
 There is not responsibilty for any faults, errors, defects and so on regarding using this images.</br>
-This is a private project and all information stated here are given you as it is and with no responsibilty for any defects, errors and harm using this software</br>
-Alpine Linux is copyrighted by the Alpine Linux Development Team with all rights reserved</br>
-Also all names and symbols from Alpine Linux is used for illustration purposes only with no responsibilty</br> 
+This is a private project and all information stated here are given you as it is and with no responsibilty for any defects, errors and harm using this software.</br>
+Alpine Linux is copyrighted by the Alpine Linux Development Team with all rights reserved.</br>
+Also all names and symbols from Alpine Linux are used for illustration purposes only with no responsibilty</br> 
 of the Alpine Linux Development Team. Link: https://www.alpinelinux.org/</br>
