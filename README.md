@@ -42,9 +42,9 @@ arm => for arm-devices</br>
 If you don't now the number of the container, please type on the console in WInBox®:</br>
 <code> /container print</code> - The number of the container is given on the output.</br></p>
 In the previous opened shell of the container in terminal of WinBox® do:</br></p>
-1.) Set root-password: $ <code>passwd root </code></br></p>
-2.) Run <code>/sbin/first_start.sh</code> to complete configuration of the image.</br></p>
-3.) Assign under IP/Firewall/NAT a DST-NAT-rule to ip of docker-container (defined under /interfaces/veth) and needed port of service in container. </br></p>
+1.) Set root-password: $ <code>passwd root </code><br /></p>
+2.) Run <code>/sbin/first_start.sh</code> to complete configuration of the image.<br /></p>
+3.) Assign under IP/Firewall/NAT a DST-NAT-rule to ip of docker-container (defined under /interfaces/veth) and needed port of service in container. <br /></p>
 
 ### Remarks
 
