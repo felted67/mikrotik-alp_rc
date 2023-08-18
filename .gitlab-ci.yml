@@ -57,7 +57,7 @@ docker-multiarch-mikrotik-build-devel:
       - RUNNER: "$RUNNER_TAGS_A"
       - RUNNER: "$RUNNER_TAGS_B"
   tags:
-    -" ${RUNNER}
+    - ${RUNNER}
   services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
@@ -87,7 +87,7 @@ docker-multiarch-mikrotik-build-devel-version:
       - RUNNER: "$RUNNER_TAGS_A"
       - RUNNER: "$RUNNER_TAGS_B"
   tags:
-    -" ${RUNNER}
+    - ${RUNNER}
   services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
@@ -117,7 +117,7 @@ docker-multiarch-mikrotik-build-devel-version-latest:
       - RUNNER: "$RUNNER_TAGS_A"
       - RUNNER: "$RUNNER_TAGS_B"
   tags:
-    -" ${RUNNER}
+    - ${RUNNER}
   services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
