@@ -18,8 +18,8 @@ docker-local-mikrotik-build:
     matrix:
       - RUNNER: $RUNNER_TAGS_A
       - RUNNER: $RUNNER_TAGS_B
- # tags:
- #   - $RUNNER
+  tags:
+    - ${RUNNER}
   services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
@@ -54,10 +54,11 @@ docker-multiarch-mikrotik-build-devel:
   image: $DIND_TAG   
   parallel:
     matrix:
-      - RUNNER: 
-      - RUNNE: $RUNNER_TAGS_B
+      - RUNNER: $RUNNER_TAGS_A
+      - RUNNER: $RUNNER_TAGS_B
   tags:
-    - services:
+    - ${RUNNER}
+  services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
@@ -83,10 +84,11 @@ docker-multiarch-mikrotik-build-devel-version:
   image: $DIND_TAG
   parallel:
     matrix:
-      - RUNNER: 
-      - RUNNE: $RUNNER_TAGS_B
+      - RUNNER: $RUNNER_TAGS_A
+      - RUNNER: $RUNNER_TAGS_B
   tags:
-    - services:
+    - ${RUNNER}
+  services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
@@ -112,10 +114,11 @@ docker-multiarch-mikrotik-build-devel-version-latest:
   image: $DIND_TAG
   parallel:
     matrix:
-      - RUNNER: 
-      - RUNNE: $RUNNER_TAGS_B
+      - RUNNER: $RUNNER_TAGS_A
+      - RUNNER: $RUNNER_TAGS_B
   tags:
-    - services:
+    - ${RUNNER}
+  services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
