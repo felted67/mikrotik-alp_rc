@@ -16,8 +16,8 @@ docker-local-mikrotik-build:
   image: $DIND_TAG
   parallel:
     matrix:
-      - RUNNER: "$RUNNER_TAGS_A"
-      - RUNNER: "$RUNNER_TAGS_B"
+      - RUNNER: [$RUNNER_TAGS_A]
+      - RUNNER: [$RUNNER_TAGS_B]
   tags:
     - ${RUNNER}
   services:
@@ -54,8 +54,8 @@ docker-multiarch-mikrotik-build-devel:
   image: $DIND_TAG   
   parallel:
     matrix:
-      - RUNNER: "$RUNNER_TAGS_A"
-      - RUNNER: "$RUNNER_TAGS_B"
+      - RUNNER: [$RUNNER_TAGS_A]
+      - RUNNER: [$RUNNER_TAGS_B]
   tags:
     - ${RUNNER}
   services:
@@ -84,8 +84,8 @@ docker-multiarch-mikrotik-build-devel-version:
   image: $DIND_TAG
   parallel:
     matrix:
-      - RUNNER: "$RUNNER_TAGS_A"
-      - RUNNER: "$RUNNER_TAGS_B"
+      - RUNNER: [$RUNNER_TAGS_A]
+      - RUNNER: [$RUNNER_TAGS_B]
   tags:
     - ${RUNNER}
   services:
@@ -114,8 +114,8 @@ docker-multiarch-mikrotik-build-devel-version-latest:
   image: $DIND_TAG
   parallel:
     matrix:
-      - RUNNER: "$RUNNER_TAGS_A"
-      - RUNNER: "$RUNNER_TAGS_B"
+      - RUNNER: [$RUNNER_TAGS_A]
+      - RUNNER: [$RUNNER_TAGS_B]
   tags:
     - ${RUNNER}
   services:
