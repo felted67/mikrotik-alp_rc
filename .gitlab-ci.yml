@@ -7,8 +7,7 @@ stages:
 include:  /.gitlab-ci-vars.yml  
 
 variables:
-  RUNNER_TAGS: 'rhel8,docker,homenet'  
-  DIND_TAG: 'docker:24.0.5-dind'
+
 
 docker-local-mikrotik-build:
   stage: docker-local-build
@@ -33,9 +32,9 @@ docker-local-mikrotik-build:
     - docker buildx build --no-cache --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
     - docker buildx build --no-cache --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
     - docker buildx build --no-cache --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL .
-    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
-    - docker save $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
-    - docker save $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL | gzip > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
   artifacts:
     expire_in: 30 days
     paths:
