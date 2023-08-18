@@ -6,9 +6,6 @@ stages:
 
 include:  /.gitlab-ci-vars.yml  
 
-variables:
-
-
 docker-local-mikrotik-build:
   stage: docker-local-build
   image: $DIND_TAG  
