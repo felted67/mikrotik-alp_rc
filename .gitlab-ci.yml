@@ -7,7 +7,7 @@ stages:
 include:  /.gitlab-ci-vars.yml  
 
 variables:
-  RUNNER_TAGS: 'rhel8,docker'  
+  RUNNER_TAGS: 'rhel8,docker,homenet'  
   DIND_TAG: 'docker:24.0.5-dind'
 
 docker-local-mikrotik-build:
