@@ -8,15 +8,15 @@ include:  /.gitlab-ci-vars.yml
 
 variables:
   RUNNER_TAGS: 'rhel8,docker,homenet,lesnet'
-  DIND-TAG: 'docker:24.0.5-dind'
+  DIND_TAG: 'docker:24.0.5-dind'
 
 docker-local-mikrotik-build:
   stage: docker-local-build
-  image: $DIND-TAG   
+  image: $DIND_TAG   
   tags:
     - $RUNNER_TAGS
   services:
-    - name: $DIND-TAG
+    - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
@@ -46,11 +46,11 @@ docker-local-mikrotik-build:
 docker-multiarch-mikrotik-build-devel:  
   stage: docker-multiarch-build-devel
   needs: [docker-local-mikrotik-build]
-  image: $DIND-TAG   
+  image: $DIND_TAG   
   tags:
     - $RUNNER_TAGS
   services:
-    - name: $DIND-TAG
+    - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
@@ -72,11 +72,11 @@ docker-multiarch-mikrotik-build-devel:
 docker-multiarch-mikrotik-build-devel-version:
   stage: docker-multiarch-build-devel-version
   needs: [docker-local-mikrotik-build]
-  image: $DIND-TAG
+  image: $DIND_TAG
   tags:
     - $RUNNER_TAGS
   services:
-    - name: $DIND-TAG
+    - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
@@ -98,11 +98,11 @@ docker-multiarch-mikrotik-build-devel-version:
 docker-multiarch-mikrotik-build-devel-version-latest:
   stage: docker-multiarch-build-devel-version-latest
   needs: [docker-local-mikrotik-build]
-  image: $DIND-TAG
+  image: $DIND_TAG
   tags:
     - $RUNNER_TAGS
   services:
-    - name: $DIND-TAG
+    - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
       alias: 'docker' 
   variables:    
