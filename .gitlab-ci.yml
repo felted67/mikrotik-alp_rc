@@ -18,8 +18,8 @@ docker-local-mikrotik-build:
     matrix:
       - RUNNER: $RUNNER_TAGS_A
       - RUNNER: $RUNNER_TAGS_B
-  tags:
-    - $RUNNER
+ # tags:
+ #   - $RUNNER
   services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
