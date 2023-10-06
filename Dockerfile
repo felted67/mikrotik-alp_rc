@@ -3,7 +3,7 @@
 # (C) 2023 DL7DET
 #
 
-FROM --platform=$TARGETPLATFORM alpine:3.18.3 AS base
+FROM --platform=$TARGETPLATFORM alpine:3.18.4 AS base
 
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.18/main/' >> /etc/apk/repositories \
     && echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.18/community' >> /etc/apk/repositories \
