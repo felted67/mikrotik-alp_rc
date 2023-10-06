@@ -4,7 +4,7 @@ variables:
   CI_REGISTRY_IMAGE: 'mikrotik-alp_rc'
   
   RUNNER_TAGS: 'arm64,docker,homenet'  
-  DIND_TAG: 'docker:24.0.5-dind'
+  DIND_TAG: 'docker:24.0.6-dind'
 
   CI_PRODUCTION_LATEST_SWITCH: 'true' 
   CI_PRODUCTION_VERSION_SWITCH: 'true'
