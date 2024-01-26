@@ -8,7 +8,7 @@ include:  /.gitlab-ci-vars.yml
 
 docker-local-mikrotik-build:
   stage: docker-local-build
-  image: $DIND_TAG  
+  image: $DIND_TAG   
   tags:
     - $RUNNER_TAGS
   services:
@@ -26,9 +26,9 @@ docker-local-mikrotik-build:
     - apk add git
     - docker info   
   script:
-    - docker buildx build --no-cache --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
-    - docker buildx build --no-cache --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
-    - docker buildx build --no-cache --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL .
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL .
     - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
     - docker save $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
     - docker save $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
@@ -60,7 +60,7 @@ docker-multiarch-mikrotik-build-devel:
     - apk add git    
     - docker info
   script:    
-    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
   rules:
     - if: ($CI_PRODUCTION_VERSION_SWITCH != "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")
   when: always
@@ -86,7 +86,7 @@ docker-multiarch-mikrotik-build-devel-version:
     - apk add git    
     - docker info
   script:
-    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
   rules:
     - if: ($CI_PRODUCTION_VERSION_SWITCH == "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")      
       when: always
@@ -112,7 +112,7 @@ docker-multiarch-mikrotik-build-devel-version-latest:
     - apk add git    
     - docker info
   script:
-    - docker buildx build --no-cache --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" .    
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST_LONG" .    
   rules:
     - if: ($CI_PRODUCTION_LATEST_SWITCH == "true" &&  $CI_PRODUCTION_VERSION_SWITCH == "true")   
       when: always 
