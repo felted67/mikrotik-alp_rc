@@ -39,8 +39,10 @@ RUN apk add --no-cache openrc \
 RUN apk update && \
     apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
 
+COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
+RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
 
-CMD ["/sbin/init"]
+CMD ["/sbin/auto_init.sh"]
