@@ -45,4 +45,6 @@ COPY ./config_files/first_start.sh /sbin/
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
 RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
 
-CMD /sbin/init ; /sbin/auto_init.sh
+ENTRYPOINT ["/sbin/auto_init.sh"]
+
+CMD ["/sbin/init"] 
