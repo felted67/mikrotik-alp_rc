@@ -11,4 +11,4 @@ echo "*"
 echo "first_start.sh completed !"
 echo "*"
 echo "****"
-
+rc-update del auto_init
