@@ -49,4 +49,6 @@ RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
 
 RUN ln -s /etc/init.d/auto_init /etc/runlevels/default/auto_init
 
+EXPOSE 22/tcp
+
 CMD ["/sbin/init"]
