@@ -43,6 +43,15 @@ COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
+RUN mkdir /root/.ssh
+COPY ./ssh_keys/id_dsa.pub /root/.ssh/
+COPY ./ssh_keys/id_rsa.pub /root/.ssh/
+COPY ./ssh_keys/id_ed25519.pub /root/.ssh/
+RUN touch /root/.ssh/authorized_keys
+RUN cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys
+RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+RUN cat /root/.ssh/id_ed25519.pub >> /root/.ssh/authorized_keys
+
 RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
 RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
