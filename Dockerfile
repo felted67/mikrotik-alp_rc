@@ -47,4 +47,4 @@ RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
 
 ENTRYPOINT ["/sbin/init"] 
 
-CMD ["/sbin/auto_init.sh"]
+CMD ["sh", "-c", "/sbin/auto_init.sh"]
