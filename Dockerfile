@@ -58,17 +58,17 @@ RUN apk add --no-cache openrc \
 RUN apk update && \
     apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
 
+RUN apk update && \
+    apk add openssh-keygen
+
 COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
 RUN mkdir /root/.ssh
-COPY ./ssh_keys/id_dsa.pub /root/.ssh/
-COPY ./ssh_keys/id_rsa.pub /root/.ssh/
-COPY ./ssh_keys/id_ed25519.pub /root/.ssh/
-COPY ./ssh_keys/id_dsa /root/.ssh/
-COPY ./ssh_keys/id_rsa /root/.ssh/
-COPY ./ssh_keys/id_ed25519 /root/.ssh/
+RUN ssh-keygen -t dsa -f /root/.ssh && \
+    ssh-keygen -t rsa -f /root/.ssh && \
+    ssh-keygen -t ed25519 -f /root/.ssh
 RUN touch /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
