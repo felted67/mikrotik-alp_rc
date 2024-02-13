@@ -5,6 +5,25 @@
 
 FROM --platform=$TARGETPLATFORM alpine:3.19.1 AS base
 
+# Preset Metadata parameters
+ARG BUILD
+ARG APP_VERSION=${CI_IMAGE_VERSION}
+ARG DEVEL_VERSION=${CI_DEVEL_VERSION}
+ARG ALPINE_VERSION=${CI_LINUX_VERSION}
+
+# Set Metadata for docker-image
+LABEL maintainer="DL7DET <detlef@lampart.de>" \
+    org.label-schema.url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc" \
+    org.label-schema.version=${APP_VERSION} \
+    org.label-schema.version-devel=${DEVEL_VERSION} \
+    org.label-schema.build-date=${BUILD} \
+    org.label-schema.version_alpine=${ALPINE_VERSION} \
+    org.label-schema.vcs-url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc.git" \
+    org.label-schema.vcs-ref=${VCS_REF} \
+    org.label-schema.docker.dockerfile="/Dockerfile" \
+    org.label-schema.description="alpine-linux-rc mikrotik-docker-image" \
+    org.label-schema.schema-version="1.0"
+
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.19/main/' >> /etc/apk/repositories \
     && echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.19/community' >> /etc/apk/repositories \
     && apk add --no-cache --update --upgrade su-exec ca-certificates
