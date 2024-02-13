@@ -1,5 +1,6 @@
 #!/bin/ash
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+echo "PubkeyAcceptedKeyTypes=+ssh-dss" >> /etc/ssh/sshd_config
 rc-update add sshd 
 rc-service sshd start
 echo "****"

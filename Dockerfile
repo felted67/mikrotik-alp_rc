@@ -47,6 +47,9 @@ RUN mkdir /root/.ssh
 COPY ./ssh_keys/id_dsa.pub /root/.ssh/
 COPY ./ssh_keys/id_rsa.pub /root/.ssh/
 COPY ./ssh_keys/id_ed25519.pub /root/.ssh/
+COPY ./ssh_keys/id_dsa /root/.ssh/
+COPY ./ssh_keys/id_rsa /root/.ssh/
+COPY ./ssh_keys/id_ed25519 /root/.ssh/
 RUN touch /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
