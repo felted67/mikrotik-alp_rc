@@ -66,11 +66,11 @@ COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
 RUN mkdir /root/.ssh
-RUN ssh-keygen -t dsa -f /root/.ssh && \
-    ssh-keygen -t rsa -f /root/.ssh && \
-    ssh-keygen -t ed25519 -f /root/.ssh
+RUN ssh-keygen -t ecdsa -b 521 && \
+    ssh-keygen -t rsa -b 4096 && \
+    ssh-keygen -t ed25519 
 RUN touch /root/.ssh/authorized_keys
-RUN cat /root/.ssh/id_dsa.pub >> /root/.ssh/authorized_keys
+RUN cat /root/.ssh/id_ecdsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_ed25519.pub >> /root/.ssh/authorized_keys
 
