@@ -66,9 +66,9 @@ COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
 RUN mkdir /root/.ssh
-RUN ssh-keygen -t ecdsa -b 521 && \
-    ssh-keygen -t rsa -b 4096 && \
-    ssh-keygen -t ed25519 
+RUN ssh-keygen -q -t ecdsa -b 521 -f /root/.ssh/id_ecdsa && \
+    ssh-keygen -q -t rsa -b 4096 -f /root/.ssh/id_rsa && \
+    ssh-keygen -q -t ed25519 -f /root/.ssh/id_ed25519 
 RUN touch /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_ecdsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
