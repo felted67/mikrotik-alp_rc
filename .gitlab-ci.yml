@@ -10,7 +10,7 @@ docker-local-mikrotik-build:
   stage: docker-local-build
   image: $DIND_TAG   
   tags:
-    - $RUNNER_TAGS
+    - $CI_RUNNER_TAGS
   services:
     - name: $DIND_TAG
       command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
