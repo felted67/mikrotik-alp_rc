@@ -69,7 +69,7 @@ RUN apk update && \
     apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
 
 RUN apk update && \
-    apk add --no-cache openssh-keygen
+    apk add --no-cache openssh-keygen eudev
 
 COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
