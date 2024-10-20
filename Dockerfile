@@ -66,10 +66,10 @@ RUN apk add --no-cache openrc \
     && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
 
 RUN apk update && \
-    apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
+    apk add --no-cache openssh openssh-keygen eudev unzip bzip2 screen wget curl iptraf-ng htop
 
 RUN apk update && \
-    apk add --no-cache openssh-keygen eudev
+    apk add --no-cache mc
 
 COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
@@ -84,7 +84,7 @@ RUN cat /root/.ssh/id_ecdsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 RUN cat /root/.ssh/id_ed25519.pub >> /root/.ssh/authorized_keys
 
-RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
+RUN chown root:root /etc/init.d/auto_init && chmod 0700 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
 RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ash
 FIRST_CONFIG="/.FIRST_CONFIG"
 if [ ! -e $FIRST_CONFIG ]; then
     touch $FIRST_CONFIG
